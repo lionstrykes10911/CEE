@@ -5,5 +5,5 @@ Catalyst Entity Editor, is a yet to be made a spiritual successor of CapsAdmin's
 <br/> This probably won't have stuff for a good while until I get actual proper time to do stuff.
 
 Note to self for later parts:
-<br/> -Folder parts.
+<br/> -Folder parts;
 <br/> -Try keeping the editor less cluttered.

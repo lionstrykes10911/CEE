@@ -4,37 +4,52 @@ local function openEditor()
 	local CEEScreenSpace = vgui.Create( "DFrame" )
 	CEEScreenSpace:SetTitle("")
 	CEEScreenSpace:SetPopupStayAtBack( true )
-	CEEScreenSpace:MakePopup()
-	CEEScreenSpace:SetSize(35, 20)
-	CEEScreenSpace:AlignRight(-7)
+	CEEScreenSpace:SetSize(surface.ScreenWidth(), surface.ScreenHeight())
+	CEEScreenSpace:SetScreenLock( true )
 	CEEScreenSpace:ShowCloseButton(true)
-	CEEScreenSpace:SetBackgroundBlur( false )
-	local EditorFrame = vgui.Create( "DFrame" )
-	EditorFrame:SetTitle("")
-	EditorFrame:SetParent( CEEScreenSpace )
-	EditorFrame:SetMinimumSize( 240, surface.ScreenHeight() )
-	EditorFrame:SetSizable( true )
-	EditorFrame:SetMinWidth(240)
-	EditorFrame:SetScreenLock( true )
-	EditorFrame:MakePopup()
-	EditorFrame:ShowCloseButton( false )
-	EditorFrame:SetPaintBorderEnabled( true )
+	CEEScreenSpace.Paint = function( self, w, h )
+	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 250 ) ) 
+	end
+local EditorExplorer = vgui.Create( "DFrame" )
+	EditorExplorer:SetTitle( "Parts" )
+	EditorExplorer:SetSizable( true )
+	EditorExplorer:SetSize(200, surface.ScreenHeight())
+	EditorExplorer:SetMinimumSize( 200, 200 )
+	EditorExplorer:SetScreenLock( true )
+	EditorExplorer:ShowCloseButton( false )
+	EditorExplorer:SetParent(CEEScreenSpace)
+	EditorExplorer.Paint = function( self, w, h )
+	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 150 ) ) 
+	end
+local EditorAttributes = vgui.Create( "DFrame" )
+	EditorAttributes:SetTitle( "Attributes" )
+	EditorAttributes:SetSize(200, surface.ScreenHeight()/2.25)
+	EditorAttributes:SetMinimumSize( 100, 10)
+	EditorAttributes:SetSizable( true )
+	EditorAttributes:AlignRight()
+	EditorAttributes:AlignBottom()
+	EditorAttributes:SetScreenLock( true )
+	EditorAttributes:ShowCloseButton( false )
+	EditorAttributes:SetParent(CEEScreenSpace)
+	EditorAttributes.Paint = function( self, w, h )
+	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 150 ) ) 
+	end
+	CEEScreenSpace:MakePopup()
+end
+
+local function closeEditor()
+
 end
 
 local function CatalystCheck() 
 	openEditor()
 end
 
-concommand.Add("cee_close", function(args)
-	closeEditor()
-end)
-
-concommand.Add("cee_open", function(args)
+concommand.Add("cee_toggle", function(args)
 	CatalystCheck()
 end)
 
 local icon = "icon64/CEEIcon_temp.png"
-icon = file.Exists("materials/"..icon,'GAME') and icon or "icon64/playermodel.png"
 
 list.Set( "DesktopWindows", "CEEditor",
 		{
@@ -42,7 +57,7 @@ list.Set( "DesktopWindows", "CEEditor",
 			icon = icon,
 			init = function( icon, window )
 			window:Remove()
-			RunConsoleCommand("cee_open")
+			RunConsoleCommand("cee_toggle")
 			end
 		}
 

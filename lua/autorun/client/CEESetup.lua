@@ -1,55 +1,42 @@
 Catalyst = Catalyst or {}
+CEEditor = {}
 
-local function openEditor()
-	local CEEScreenSpace = vgui.Create( "DFrame" )
-	CEEScreenSpace:SetTitle("")
-	CEEScreenSpace:SetPopupStayAtBack( true )
-	CEEScreenSpace:SetSize(surface.ScreenWidth(), surface.ScreenHeight())
-	CEEScreenSpace:SetScreenLock( true )
-	CEEScreenSpace:ShowCloseButton(true)
-	CEEScreenSpace.Paint = function( self, w, h )
+function CEEditor:openEditor()
+	self = vgui.Create( "DFrame" )
+	self:SetTitle("Parts")
+	self:SetPopupStayAtBack( true )
+	self:SetSize(surface.ScreenWidth(), surface.ScreenHeight())
+	self:SetScreenLock( true )
+	self:ShowCloseButton( false )
+	self.Paint = function( self, w, h )
 	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 250 ) ) 
 	end
-local EditorExplorer = vgui.Create( "DFrame" )
-	EditorExplorer:SetTitle( "Parts" )
-	EditorExplorer:SetSizable( true )
-	EditorExplorer:SetSize(200, surface.ScreenHeight())
-	EditorExplorer:SetMinimumSize( 200, 200 )
-	EditorExplorer:SetScreenLock( true )
-	EditorExplorer:ShowCloseButton( false )
-	EditorExplorer:SetParent(CEEScreenSpace)
-	EditorExplorer.Paint = function( self, w, h )
+	self.EditorAttributes = vgui.Create( "DFrame" )
+	self.EditorAttributes:SetTitle( "Attributes" )
+	self.EditorAttributes:SetSize(200, surface.ScreenHeight()/2.25)
+	self.EditorAttributes:SetMinimumSize( 100, 10)
+	self.EditorAttributes:SetSizable( true )
+	self.EditorAttributes:AlignRight()
+	self.EditorAttributes:AlignBottom()
+	self.EditorAttributes:SetScreenLock( true )
+	self.EditorAttributes:ShowCloseButton( false )
+	self.EditorAttributes.Paint = function( self, w, h )
 	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 150 ) ) 
 	end
-local EditorAttributes = vgui.Create( "DFrame" )
-	EditorAttributes:SetTitle( "Attributes" )
-	EditorAttributes:SetSize(200, surface.ScreenHeight()/2.25)
-	EditorAttributes:SetMinimumSize( 100, 10)
-	EditorAttributes:SetSizable( true )
-	EditorAttributes:AlignRight()
-	EditorAttributes:AlignBottom()
-	EditorAttributes:SetScreenLock( true )
-	EditorAttributes:ShowCloseButton( false )
-	EditorAttributes:SetParent(CEEScreenSpace)
-	EditorAttributes.Paint = function( self, w, h )
-	draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 34, 97, 150 ) ) 
-	end
-	CEEScreenSpace:MakePopup()
+	self.CloseButton = vgui.Create( "DButton" )
+	self.CloseButton:SetText("X")
+	self.CloseButton.DoClick = function() self:Remove() end
+	self.CloseButton.Paint = function(self, w, h) derma.SkinHook("Paint", "WindowCloseButton", self, w, h) end
+	self.CloseButton:SetSize(31, 26)
+	self.CloseButton:SetPos(surface.ScreenWidth() - self.CloseButton:GetWide() + 4, -4)
+	RegisterDermaMenuForClose( CEEditor )
 end
 
-local function closeEditor()
-
-end
-
-local function CatalystCheck() 
-	openEditor()
-end
-
-concommand.Add("cee_toggle", function(args)
-	CatalystCheck()
+concommand.Add("cee_open", function(args)
+	CEEditor.openEditor()
 end)
 
-local icon = "icon64/CEEIcon_temp.png"
+local icon = "icon64/CEEIcon_temp.png" or "icon64/playermodel.png"
 
 list.Set( "DesktopWindows", "CEEditor",
 		{
@@ -57,7 +44,7 @@ list.Set( "DesktopWindows", "CEEditor",
 			icon = icon,
 			init = function( icon, window )
 			window:Remove()
-			RunConsoleCommand("cee_toggle")
+			RunConsoleCommand("cee_open")
 			end
 		}
 

@@ -10,3 +10,4 @@ Note to self for later parts (Based on priority):
 <br/> -Proxy expression text editor;
 <br/> -Folder parts;
 <br/> -Wiki;
+<br/> -Projectile types.

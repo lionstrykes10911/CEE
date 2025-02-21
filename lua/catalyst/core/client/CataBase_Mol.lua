@@ -1,0 +1,1 @@
+local Catalyst = Catalyst or {}

@@ -14,7 +14,7 @@ local icon = "icon64/CEEIcon_temp.png" or "icon64/playermodel.png"
 
 list.Set( "DesktopWindows", "Catalyst",
 		{
-			title = "Catalyst E. Editor",
+			title = "Catalyst",
 			icon = icon,
 			init = function( icon, window )
 			window:Remove()

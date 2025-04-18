@@ -9,7 +9,7 @@ local parts = parts or {}
 --[[
 while self:isValid() do
   if self.hidden ~= Catalyst:isHidden(self or parent) then --simply check if the hidden state has changed or not for itself
-    if not Catalyst:isHidden(self or parent) then
+    if not Catalyst:isHidden(self or parent) then --getting the actual hide state (will add function later)
         self.hidden = false
         table.insert(parts, self)
     else

@@ -16,8 +16,6 @@ while self:isValid() do
         self.hidden = true
         table.insert(parts, PInd)
     end
-  else
   end
-else
 end
 ]]--

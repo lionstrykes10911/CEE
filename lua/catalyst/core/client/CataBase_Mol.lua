@@ -8,14 +8,16 @@ local parts = parts or {}
 --instead of doing iterated table checks
 --[[
 while self:isValid() do
-  if self.hidden ~= Catalyst:isHidden(self or parent) then
-      self.hidden = false
-      table.insert(parts, self)
+  if self.hidden ~= Catalyst:isHidden(self or parent) then --simply check if the hidden state has changed or not for itself
+    if not Catalyst:isHidden(self or parent) then
+        self.hidden = false
+        table.insert(parts, self)
+    else
+        self.hidden = true
+        table.insert(parts, PInd)
+    end
   else
-      self.hidden = true
-      table.insert(parts, PInd)
   end
 else
-end
 end
 ]]--
